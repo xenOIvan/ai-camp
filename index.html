@@ -176,6 +176,7 @@
         }
 
         .agenda-card h3 {
+            direction: rtl;
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--accent-color);
@@ -192,6 +193,7 @@
         }
 
         .agenda-card .sub-text {
+            direction: rtl;
             font-size: 0.9rem;
             color: #888;
             margin-top: 1rem;
@@ -325,6 +327,87 @@
             border-top: 1px solid var(--glass-border);
         }
 
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .lightbox.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 1001;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-color);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+            transition: color 0.3s;
+            z-index: 1001;
+        }
+
+        .lightbox-nav:hover {
+            color: var(--accent-color);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .lightbox-caption {
+            margin-top: 1rem;
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
@@ -343,27 +426,12 @@
 
     <div class="container">
         
-        <!-- Images Section -->
-        <section id="visuals">
+        <!-- Images Section Part 1 -->
+        <section id="visuals-1">
             <h2>Visuals</h2>
             <div class="image-row">
                 <img src="unnamed.png" alt="Visual Representation 1" loading="lazy">
             </div>
-            <div class="image-row">
-                <img src="unnamed (1).png" alt="Visual Representation 2" loading="lazy">
-            </div>
-        </section>
-
-        <!-- Video Section -->
-        <section id="video">
-            <h2>Watch</h2>
-            <div class="video-wrapper">
-                <video controls poster="">
-                    <source src="هوش_مصنوعی_در_کدبیس_شما.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            <p style="margin-top: 1rem; color: #888;">AI in your codebase</p>
         </section>
 
         <!-- Agenda / Core Concepts Section -->
@@ -427,6 +495,25 @@
                     <p class="sub-text">تغییر باید از سطوح رهبری فنی شروع شود. تیم باید روش‌های همکاری خود را بر اساس سرعت بالای تولید کد توسط هوش مصنوعی بازتعریف کند.</p>
                 </div>
             </div>
+        </section>
+
+        <!-- Images Section Part 2 -->
+        <section id="visuals-2">
+            <div class="image-row">
+                <img src="unnamed (1).png" alt="Visual Representation 2" loading="lazy">
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section id="video">
+            <h2>Watch</h2>
+            <div class="video-wrapper">
+                <video controls poster="">
+                    <source src="هوش_مصنوعی_در_کدبیس_شما.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <p style="margin-top: 1rem; color: #888;">AI in your codebase</p>
         </section>
 
         <!-- Slides Section -->
@@ -496,6 +583,15 @@
 
     </div>
 
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-nav lightbox-prev">&#10094;</div>
+        <img class="lightbox-content" id="lightbox-img">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <div class="lightbox-nav lightbox-next">&#10095;</div>
+    </div>
+
     <footer>
         <p>&copy; 2025 Don't Outsource Thinking. All rights reserved.</p>
     </footer>
@@ -535,6 +631,69 @@
 
         // Initialize paused
         bars.forEach(bar => bar.style.animationPlayState = 'paused');
+
+        // Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeBtn = document.querySelector('.lightbox-close');
+        const prevBtn = document.querySelector('.lightbox-prev');
+        const nextBtn = document.querySelector('.lightbox-next');
+        
+        // Collect all images that should be in the lightbox (slides + visuals)
+        const slideImages = Array.from(document.querySelectorAll('.slide-card img'));
+        const visualImages = Array.from(document.querySelectorAll('.image-row img'));
+        const allImages = [...visualImages, ...slideImages];
+
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const img = allImages[currentIndex];
+            lightboxImg.src = img.src;
+            lightboxCaption.textContent = img.alt || `Image ${currentIndex + 1}`;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        function showNext() {
+            currentIndex = (currentIndex + 1) % allImages.length;
+            openLightbox(currentIndex);
+        }
+
+        function showPrev() {
+            currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+            openLightbox(currentIndex);
+        }
+
+        // Add click events to images
+        allImages.forEach((img, index) => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', () => openLightbox(index));
+        });
+
+        // Event Listeners
+        closeBtn.addEventListener('click', closeLightbox);
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+        });
     </script>
 </body>
 </html>
