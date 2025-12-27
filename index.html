@@ -211,6 +211,33 @@
             justify-content: space-between;
         }
 
+        /* Slides */
+        .slides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .slide-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        .slide-card:hover {
+            transform: scale(1.02);
+            z-index: 10;
+            border-color: var(--accent-color);
+        }
+
+        .slide-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .doc-card:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.05);
@@ -399,6 +426,27 @@
                     <p>ادغام هوش مصنوعی در سازمان بیشتر یک چالش فرهنگی است تا فنی.</p>
                     <p class="sub-text">تغییر باید از سطوح رهبری فنی شروع شود. تیم باید روش‌های همکاری خود را بر اساس سرعت بالای تولید کد توسط هوش مصنوعی بازتعریف کند.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- Slides Section -->
+        <section id="slides">
+            <h2>Presentation Slides</h2>
+            <div class="slides-grid">
+                <div class="slide-card"><img src="slides/slide_1.png" alt="Slide 1" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_2.png" alt="Slide 2" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_3.png" alt="Slide 3" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_4.png" alt="Slide 4" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_5.png" alt="Slide 5" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_6.png" alt="Slide 6" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_7.png" alt="Slide 7" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_8.png" alt="Slide 8" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_9.png" alt="Slide 9" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_10.png" alt="Slide 10" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_11.png" alt="Slide 11" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_12.png" alt="Slide 12" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_13.png" alt="Slide 13" loading="lazy"></div>
+                <div class="slide-card"><img src="slides/slide_14.png" alt="Slide 14" loading="lazy"></div>
             </div>
         </section>
 
