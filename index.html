@@ -1,179 +1,492 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نقشه جامع هوش مصنوعی سازمانی ۲۰۲۵</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Don't Outsource Thinking</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
-        
+        :root {
+            --bg-color: #050505;
+            --text-color: #e0e0e0;
+            --accent-color: #ff3366;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: #f4f7f9;
-            color: #2c3e50;
-            line-height: 1.8;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
-        .hero-section {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 60px 0;
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 4rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1rem;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            margin-bottom: 8rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 70%);
         }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            transition: transform 0.3s;
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            animation: bounce 2s infinite;
+            opacity: 0.5;
         }
-        .card:hover {
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* Images */
+        .image-row {
+            width: 100%;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .image-row img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.7s ease;
+        }
+
+        .image-row:hover img {
+            transform: scale(1.02);
+        }
+
+        /* Video */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 0 40px rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--glass-border);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Agent / Documents */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Agenda / Core Concepts */
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .agenda-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 16px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agenda-card:hover {
             transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-color);
         }
-        .card-title {
-            color: #1e3c72;
-            font-weight: bold;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+
+        .card-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            line-height: 1;
         }
-        .badge-tool {
-            background-color: #eef2f7;
-            color: #1e3c72;
-            border: 1px solid #d1d9e6;
-            margin: 2px;
+
+        .agenda-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .agenda-card p {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .agenda-card .sub-text {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+        }
+
+        .doc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 16px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-color);
+        }
+
+        .doc-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .doc-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            word-break: break-word;
+        }
+
+        .btn {
             display: inline-block;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-align: center;
         }
-        .citation {
-            font-size: 0.8rem;
-            color: #95a5a6;
-            vertical-align: super;
+
+        .btn:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
         }
-        .highlight {
-            color: #e67e22;
-            font-weight: bold;
+
+        /* Podcast */
+        .podcast-player {
+            background: linear-gradient(145deg, #111, #0a0a0a);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
-        .footer {
-            background: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            margin-top: 50px;
+
+        .audio-visualizer {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 2rem;
         }
+
+        .bar {
+            width: 6px;
+            background: var(--accent-color);
+            border-radius: 4px;
+            animation: equalize 1s infinite ease-in-out;
+        }
+
+        @keyframes equalize {
+            0%, 100% { height: 20%; opacity: 0.3; }
+            50% { height: 100%; opacity: 1; }
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 1rem;
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
     </style>
 </head>
 <body>
 
-<div class="hero-section">
+    <header>
+        <div class="container">
+            <h1>Don't Outsource Thinking</h1>
+            <p style="font-size: 1.2rem; color: #888; max-width: 600px; margin: 0 auto;">
+                A curated collection of insights, visuals, and discussions on the future of software engineering in the age of AI.
+            </p>
+        </div>
+        <div class="scroll-indicator">
+            ↓
+        </div>
+    </header>
+
     <div class="container">
-        <h1>نقشه جامع هوش مصنوعی سازمانی ۲۰۲۵</h1>
-        <p class="lead">استراتژی‌های پیاده‌سازی، مشاهده‌پذیری و حاکمیت در دنیای هوش مصنوعی خودمختار</p>
-    </div>
-</div>
+        
+        <!-- Images Section -->
+        <section id="visuals">
+            <h2>Visuals</h2>
+            <div class="image-row">
+                <img src="unnamed.png" alt="Visual Representation 1" loading="lazy">
+            </div>
+            <div class="image-row">
+                <img src="unnamed (1).png" alt="Visual Representation 2" loading="lazy">
+            </div>
+        </section>
 
-<div class="container">
-    <div class="row">
-        <!-- هوش مصنوعی در SDLC -->
-        <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">🚀 تحول در چرخه توسعه نرم‌افزار (SDLC)</h5>
-                    <p>ادغام هوش مصنوعی باعث بهبود <b>۲۵ تا ۴۰ درصدی</b> در فرآیند استقرار و کیفیت نرم‌افزار شده است [۱۰۲، ۱۵۱].</p>
-                    <ul>
-                        <li><b>برنامه‌ریزی:</b> استفاده از NLP برای تبدیل نیازمندی‌ها به User Stories [۹۸].</li>
-                        <li><b>توسعه:</b> بهبود <b>۶۵ درصدی سرعت کدنویسی</b> با دستیارهای هوشمند [۱۲۱، ۱۵۳].</li>
-                        <li><b>تست:</b> پیاده‌سازی تست‌های "خود-ترمیم" (Self-healing) [۱۰۰].</li>
-                        <li><b>عملیات (AIOps):</b> تحلیل خودکار ریشه مشکلات و کاهش زمان بازیابی (MTTR) [۱۰۲، ۱۵۶].</li>
-                    </ul>
+        <!-- Video Section -->
+        <section id="video">
+            <h2>Watch</h2>
+            <div class="video-wrapper">
+                <video controls poster="">
+                    <source src="هوش_مصنوعی_در_کدبیس_شما.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <p style="margin-top: 1rem; color: #888;">AI in your codebase</p>
+        </section>
+
+        <!-- Agenda / Core Concepts Section -->
+        <section id="agenda">
+            <h2>Engineering Beyond the Vibe</h2>
+            <div class="agenda-grid">
+                <!-- Card 1 -->
+                <div class="agenda-card">
+                    <div class="card-number">01</div>
+                    <h3>No Vibe Allowed!</h3>
+                    <p>گذار از "Vibe Coding" به مهندسی هدفمند و ساختاریافته.</p>
+                    <p class="sub-text">در پروژه‌های پیچیده و واقعی، "حس خوب" یا "وایب" کافی نیست و باید ساختار و استراتژی داشته باشیم. هوش مصنوعی بدون استراتژی باعث تولید کدهای کثیف و بدهی فنی می‌شود.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="agenda-card">
+                    <div class="card-number">02</div>
+                    <h3>Don’t Outsource Think</h3>
+                    <p>هوش مصنوعی باید تفکر انسانی را تقویت کند، نه جایگزین آن شود.</p>
+                    <p class="sub-text">اگر درک شما از مسئله ضعیف باشد، هوش مصنوعی همان تفکر ناقص را با قدرت بیشتری بازتولید می‌کند. هم‌راستایی ذهنی از سوی انسان ضروری است.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="agenda-card">
+                    <div class="card-number">03</div>
+                    <h3>Context Engineering</h3>
+                    <p>مدیریت آگاهانه اطلاعات ورودی به مدل‌ها برای به دست آوردن بهترین خروجی.</p>
+                    <p class="sub-text">اطلاعات غیرضروری باید فشرده شوند تا مدل تنها داده‌های حیاتی و ضروری را دریافت کند.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="agenda-card">
+                    <div class="card-number">04</div>
+                    <h3>AI Dumb Zone</h3>
+                    <p>منطقه حماقت هوش مصنوعی وقتی که پنجره حافظه آن‌ها بیش از حد پر شود.</p>
+                    <p class="sub-text">وقتی ظرفیت کانتکست بیش از حد پر شود، مدل وارد "Dumb Zone" می‌شود و کیفیت کاهش می‌یابد.</p>
+                </div>
+                <!-- Card 5 -->
+                <div class="agenda-card">
+                    <div class="card-number">05</div>
+                    <h3>Who Lies The Most?</h3>
+                    <p>اهمیت مطابقت کد و مستندات.</p>
+                    <p class="sub-text">شیوه‌نامه طول عمر مستندات داخلی در کدبیس‌های بزرگ، چون سریعاً قدیمی می‌شوند.</p>
+                </div>
+                <!-- Card 6 -->
+                <div class="agenda-card">
+                    <div class="card-number">06</div>
+                    <h3>Onboarding Agents</h3>
+                    <p>آموزش ورود به کار برای ایجنت‌ها و آشنایی آن‌ها با پروژه.</p>
+                    <p class="sub-text">ایجنت‌ها باید ساختار مخزن (Repo) و زمینه پروژه را بشناسند. در غیر این صورت، وارد حالت توهم (Hallucination) خواهند شد.</p>
+                </div>
+                <!-- Card 7 -->
+                <div class="agenda-card">
+                    <div class="card-number">07</div>
+                    <h3>RPI in Your Flavor</h3>
+                    <p>چرخه تحقیق، طرح، و اجرا (Research -> Plan -> Implement).</p>
+                    <p class="sub-text">مناسب سازی ابزارها با نیازمندی ها و دانش فنی تیم و جلوگیری از Over Engineering.</p>
+                </div>
+                <!-- Card 8 -->
+                <div class="agenda-card">
+                    <div class="card-number">08</div>
+                    <h3>Cultural Change Hard</h3>
+                    <p>ادغام هوش مصنوعی در سازمان بیشتر یک چالش فرهنگی است تا فنی.</p>
+                    <p class="sub-text">تغییر باید از سطوح رهبری فنی شروع شود. تیم باید روش‌های همکاری خود را بر اساس سرعت بالای تولید کد توسط هوش مصنوعی بازتعریف کند.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- مشاهده‌پذیری -->
-        <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">🔍 مشاهده‌پذیری هوش مصنوعی (Observability)</h5>
-                    <p>در سال ۲۰۲۵، مشاهده‌پذیری برای خروج مدل‌ها از وضعیت "جعبه سیاه" الزامی است [۳، ۲۰].</p>
-                    <div class="mb-3">
-                        <span class="badge-tool"><b>Upsolve:</b> داشبوردهای نقش‌محور [۱۸، ۱۶۲]</span>
-                        <span class="badge-tool"><b>Arize AI:</b> شناسایی رانش (Drift) [۱۹، ۱۶۲]</span>
-                        <span class="badge-tool"><b>WhyLabs:</b> کیفیت داده‌ها [۱۷، ۲۶]</span>
-                        <span class="badge-tool"><b>Maxim AI:</b> شبیه‌سازی و ارزیابی [۴۶۴]</span>
-                    </div>
-                    <p>ویژگی‌های حیاتی: ردیابی هوش مصنوعی (Tracing) و شناسایی ناهنجاری‌ها [۳۲۲، ۳۲۶].</p>
+        <!-- Agent / Documents Section -->
+        <section id="agent">
+            <h2>PDF Resources</h2>
+            <div class="agent-grid">
+                <div class="doc-card">
+                    <div class="doc-icon">📄</div>
+                    <div class="doc-title">Engineering Beyond the Vibe</div>
+                    <a href="Engineering_Beyond_the_Vibe.pdf" class="btn" target="_blank">Read PDF</a>
+                </div>
+                <div class="doc-card">
+                    <div class="doc-icon">🧠</div>
+                    <div class="doc-title">Cognitive Architecture of Software Engineering</div>
+                    <div style="font-size: 0.8rem; color: #666; margin-bottom: 0.5rem;">معماری شناختی مهندسی نرم افزار در عصر هوش مصنوعی</div>
+                    <a href="معماری_شناختی_مهندسی_نرم_افزار_در_عصر_هوش_مصنوعی.pdf" class="btn" target="_blank">Read PDF</a>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="row mt-4">
-        <!-- حاکمیت و توهمات -->
-        <div class="col-md-7">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">⚖️ حاکمیت، ریسک و مقابله با توهمات</h5>
-                    <p><b>حاکمیت (Governance):</b> شامل چارچوب‌هایی مانند <b>NIST AI RMF</b> و استاندارد <b>ISO 42001</b> برای مدیریت ریسک [۷۵، ۸۵، ۱۶۵].</p>
-                    <hr>
-                    <p><b>مقابله با توهمات (Hallucinations):</b></p>
-                    <ul>
-                        <li>استفاده از رویکرد <b>RAG</b> برای متصل کردن مدل به داده‌های معتبر [۱۵۸، ۵۰۳].</li>
-                        <li>استفاده از متد <b>ICE</b> (دستورالعمل، محدودیت، ارتقا) در مهندسی پرامپت [۱۷۸].</li>
-                        <li>کنترل <b>دمای مدل</b> (۰.۱ تا ۰.۴) برای پاسخ‌های قطعی‌تر [۱۶۰، ۱۷۹].</li>
-                    </ul>
+        <!-- Podcast Section -->
+        <section id="podcast">
+            <h2>The Podcast</h2>
+            <div class="podcast-player">
+                <div class="audio-visualizer">
+                    <!-- Generating bars via JS would be cleaner, but hardcoded for simplicity -->
+                    <div class="bar" style="animation-duration: 0.5s"></div>
+                    <div class="bar" style="animation-duration: 0.7s"></div>
+                    <div class="bar" style="animation-duration: 0.4s"></div>
+                    <div class="bar" style="animation-duration: 0.6s"></div>
+                    <div class="bar" style="animation-duration: 0.8s"></div>
+                    <div class="bar" style="animation-duration: 0.5s"></div>
+                    <div class="bar" style="animation-duration: 0.3s"></div>
+                    <div class="bar" style="animation-duration: 0.6s"></div>
+                    <div class="bar" style="animation-duration: 0.9s"></div>
+                    <div class="bar" style="animation-duration: 0.4s"></div>
                 </div>
+                <h3 style="margin-bottom: 1rem;">AI in Software Development: Control or Independence?</h3>
+                <p style="color: #888; margin-bottom: 2rem;">هوش مصنوعی در توسعه نرم افزار کنترل یا استقلال</p>
+                <audio controls>
+                    <source src="هوش_مصنوعی_در_توسعه_نرم_افزار_کنترل_یا_استقلال.m4a" type="audio/mp4">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
-        </div>
+        </section>
 
-        <!-- مهندسی زمینه -->
-        <div class="col-md-5">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">🧠 مهندسی زمینه و جریان RPI</h5>
-                    <p class="highlight">No Vibe Allowed!</p>
-                    <p>گذار از کدنویسی احساسی به مهندسی ساختاریافته [۱۹۵، ۳۸۰].</p>
-                    <ul>
-                        <li><b>Dumb Zone:</b> مدل‌ها پس از پر شدن ۴۰٪ کانتکست دچار افت کیفیت می‌شوند [۲۰۱، ۲۶۹، ۳۸۳].</li>
-                        <li><b>جریان کاری RPI:</b>
-                            <ol>
-                                <li><b>Research:</b> تحقیق و درک کدبیس [۲۰۳، ۲۰۷].</li>
-                                <li><b>Plan:</b> طراحی برنامه دقیق قبل از اجرا [۲۰۸، ۲۷۹].</li>
-                                <li><b>Implement:</b> اجرای هدایت‌شده [۲۰۸].</li>
-                            </ol>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- موارد استفاده سازمانی -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">🌍 کاربردهای استراتژیک در صنایع (Enterprise Use Cases)</h5>
-                    <div class="row text-start p-3">
-                        <div class="col-md-3"><b>مالی:</b> کشف تقلب و KYC خودکار [۱۴۶، ۳۹۰]</div>
-                        <div class="col-md-3"><b>سلامت:</b> تشخیص رادیولوژی و درمان شخصی [۱۴۸، ۳۸۹]</div>
-                        <div class="col-md-3"><b>تولید:</b> نگهداری پیش‌بایانه و دوقلوی دیجیتال [۱۵۰، ۴۳۲]</div>
-                        <div class="col-md-3"><b>لجستیک:</b> بهینه‌سازی مسیر و زنجیره تأمین [۱۵۰، ۳۹۲]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <footer>
+        <p>&copy; 2025 Don't Outsource Thinking. All rights reserved.</p>
+    </footer>
 
-<footer class="footer text-center">
-    <div class="container">
-        <p>بر اساس گزارش‌های فنی و استراتژیک سال ۲۰۲۵</p>
-        <p style="font-size: 0.8rem;">تمامی اطلاعات مستقیماً از منابع مستند استخراج شده است.</p>
-    </div>
-</footer>
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
 
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Simple visualizer animation pause when audio is paused
+        const audio = document.querySelector('audio');
+        const bars = document.querySelectorAll('.bar');
+        
+        audio.addEventListener('play', () => {
+            bars.forEach(bar => bar.style.animationPlayState = 'running');
+        });
+        
+        audio.addEventListener('pause', () => {
+            bars.forEach(bar => bar.style.animationPlayState = 'paused');
+        });
+
+        // Initialize paused
+        bars.forEach(bar => bar.style.animationPlayState = 'paused');
+    </script>
 </body>
 </html>
