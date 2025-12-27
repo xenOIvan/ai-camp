@@ -731,6 +731,24 @@
             if (e.key === 'ArrowRight') showNext();
             if (e.key === 'ArrowLeft') showPrev();
         });
+
+        // Dynamic Accent Color on Scroll
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / docHeight;
+
+            // Start at Hue 345 (Pink) and rotate to Hue 180 (Cyan)
+            // You can adjust the range to cycle through different colors
+            const startHue = 345;
+            const endHue = 180; 
+            
+            // Calculate current hue
+            // We use a bit of math to handle the wrap around if needed, but linear is fine here
+            const currentHue = startHue - (scrollPercent * (startHue - endHue));
+
+            document.documentElement.style.setProperty('--accent-color', `hsl(${currentHue}, 100%, 60%)`);
+        });
     </script>
 </body>
 </html>
